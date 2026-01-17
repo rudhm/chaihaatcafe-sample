@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#F9F7F2" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#1a1614" media="(prefers-color-scheme: dark)">
+    <meta name="description" content="Chai Haat Cafe - The best place in Maihar for Masala Chai, Coffee, and Snacks. Order via WhatsApp.">
     <title>Chai Haat Cafe - Best Chai in Maihar</title>
     
     <!-- Site Icon (Favicon) -->
@@ -123,7 +124,6 @@
             gap: 12px;
         }
 
-        /* NEW LOGO WRAPPER FOR PNG + SVG OVERLAY */
         .logo-wrapper {
             position: relative;
             width: 48px;
@@ -145,7 +145,7 @@
 
         .steam-svg {
             position: absolute;
-            top: -1px; /* Moved up */
+            top: -1px;
             left: 0;
             width: 100%;
             height: 100%;
@@ -156,7 +156,7 @@
         .steam-path {
             fill: none;
             stroke: var(--accent-main);
-            stroke-width: 27; /* Increased thickness */
+            stroke-width: 27;
             stroke-linecap: round;
             stroke-linejoin: round;
             opacity: 0; 
@@ -266,7 +266,6 @@
             margin-bottom: 30px;
             box-shadow: var(--shadow-soft);
             border: 1px solid rgba(255,255,255,0.5);
-            /* Added Floating Animation */
             animation: float 6s ease-in-out infinite;
         }
 
@@ -338,12 +337,12 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr); /* 2 Columns */
             gap: 16px; 
-            padding: 0 5px; /* Prevent edge touching */
+            padding: 0 5px;
         }
 
         .menu-item {
             display: flex;
-            flex-direction: column; /* Stack vertically */
+            flex-direction: column;
             background: var(--bg-card);
             border-radius: 20px;
             box-shadow: var(--shadow-soft);
@@ -351,7 +350,7 @@
             border: 1px solid transparent;
             position: relative;
             overflow: hidden;
-            padding: 0; /* Remove padding for edge-to-edge image */
+            padding: 0;
         }
         
         .menu-item:hover {
@@ -367,21 +366,23 @@
 
         .menu-item-img {
             width: 100%; 
-            height: 150px; /* Fixed height for uniformity */
+            /* Fix 4.2: Reduce layout shifts */
+            aspect-ratio: 1 / 1; 
             object-fit: cover;
-            margin: 0; /* Reset margin */
-            border-radius: 0; /* Reset radius */
+            margin: 0;
+            border-radius: 0;
             background-color: var(--border-soft);
         }
         
         /* Hero image is taller */
         .menu-item.hero-item .menu-item-img {
-            height: 200px;
+            aspect-ratio: 16 / 9;
+            max-height: 250px;
         }
         
         .item-details { 
             width: 100%;
-            padding: 12px; /* Inner padding for text */
+            padding: 12px;
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -423,7 +424,7 @@
             margin-top: 0;
         }
         
-        /* Stepper & Add Button Refinements for Grid */
+        /* Stepper & Add Button */
         .action-box { 
             display: flex; 
             align-items: center; 
@@ -432,7 +433,7 @@
         .add-btn {
             background-color: var(--accent-light);
             color: var(--accent-main);
-            padding: 6px 12px; /* Compact button */
+            padding: 6px 12px; 
             border-radius: 10px;
             font-size: 0.85rem;
             font-weight: 700;
@@ -452,6 +453,7 @@
         .stepper-btn {
             width: 28px; height: 100%; color: var(--accent-main);
             font-weight: bold; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+            background: transparent;
         }
         .stepper-val { width: 20px; text-align: center; font-weight: 700; font-size: 0.9rem; color: var(--text-primary); }
         
@@ -515,6 +517,7 @@
         }
 
         /* --- CART FLOATING BUTTON --- */
+        /* Fix 2.2: Animation approach */
         .cart-float {
             position: fixed;
             bottom: calc(24px + env(safe-area-inset-bottom));
@@ -522,7 +525,7 @@
             transform: translateX(-50%) scale(0.9);
             width: 90%;
             max-width: 480px;
-            background: rgba(45, 36, 32, 0.95); /* Semi-transparent dark */
+            background: rgba(45, 36, 32, 0.95);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             color: white;
@@ -534,13 +537,32 @@
             align-items: center;
             z-index: 1000;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: none;
+            transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             opacity: 0;
+            pointer-events: none; /* Hidden state */
             border: 1px solid rgba(255,255,255,0.1);
         }
-        .cart-float.visible { display: flex; opacity: 1; transform: translateX(-50%) scale(1); }
+        
+        .cart-float.visible { 
+            opacity: 1; 
+            transform: translateX(-50%) scale(1); 
+            pointer-events: auto; /* Active state */
+        }
+        
         .cart-float:active { transform: translateX(-50%) scale(0.96); }
+        
+        /* Fix 1.1: Missing shake keyframes */
+        @keyframes shake {
+            0% { transform: translateX(-50%) scale(1); }
+            25% { transform: translateX(-52%) scale(1.02); }
+            50% { transform: translateX(-48%) scale(1.02); }
+            75% { transform: translateX(-51%) scale(1.01); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+        
+        .cart-float.shake {
+            animation: shake 0.4s ease;
+        }
         
         .cart-info { display: flex; flex-direction: column; line-height: 1.2; }
         .cart-count { font-size: 0.75rem; opacity: 0.8; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }
@@ -562,6 +584,29 @@
             color: var(--text-primary);
             max-height: 85vh; display: flex; flex-direction: column;
         }
+        
+        .checkout-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #25D366; /* WhatsApp Green */
+            color: white;
+            padding: 16px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 24px;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.25);
+        }
+        .checkout-btn:hover {
+            background-color: #128C7E;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(37, 211, 102, 0.4);
+        }
+        .checkout-btn:active { transform: scale(0.98); }
+
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -573,12 +618,21 @@
         .reveal-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
     </style>
+    
+    <!-- Fix 1.2: Initialize Theme Early to prevent Flash -->
+    <script>
+        (function initTheme() {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            // Icon update happens in DOMContentLoaded, but attribute is set now
+        })();
+    </script>
 </head>
 <body>
 
     <header>
         <div class="logo-container">
-            <!-- REPLACED SVG LOGO WITH PNG + STEAM OVERLAY -->
+            <!-- SVG + PNG Overlay -->
             <div class="logo-wrapper">
                 <svg class="steam-svg" viewBox="0 0 500 450" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path class="steam-path" d="M155,165 C155,165 125,125 155,90 C170,70 160,45 160,45" />
@@ -596,8 +650,8 @@
     </header>
 
     <div class="category-nav">
-        <button class="nav-pill active" onclick="scrollToCategory('hot-sips')">Hot Sips</button>
-        <button class="nav-pill" onclick="scrollToCategory('savory-bites')">Savory Bites</button>
+        <button type="button" class="nav-pill active" onclick="scrollToCategory('hot-sips')">Hot Sips</button>
+        <button type="button" class="nav-pill" onclick="scrollToCategory('savory-bites')">Savory Bites</button>
     </div>
 
     <div class="container">
@@ -607,30 +661,13 @@
             <p>From piping hot Maggi to our signature Masala Chai—this is where friendships are brewed.</p>
         </section>
 
-        <img src="https://images.unsplash.com/photo-1680413002471-965cca788f5b?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chai Haat Shop Exterior" class="hero-img">
+        <!-- Fix 3.1: Add alt text -->
+        <img src="https://images.unsplash.com/photo-1680413002471-965cca788f5b?q=80&w=774&auto=format&fit=crop" alt="Chai Haat Shop Exterior" class="hero-img">
 
         <section class="reveal-on-scroll" style="text-align: center; margin-bottom: 40px; padding: 0 10px;">
             <p style="font-size: 1rem; color: var(--text-primary); line-height: 1.8; max-width: 550px; margin: 0 auto; font-family: var(--font-heading); font-weight: 500;">
                 At <strong style="color: var(--accent-main);">Chai Haat</strong>, we aren't just a tea shop; we are your daily hangout spot. Whether you’re here to bond with old friends over a plate of spicy Maggi, share a loaded Burger with a date, or just find some comfort in a warm cup of Masala Chai, we have a table waiting for you.
             </p>
-        </section>
-
-        <!-- INSTAGRAM FEED SECTION -->
-        <section class="insta-section reveal-on-scroll">
-            <div class="insta-header">
-                <h2 class="insta-title">Daily Vibes</h2>
-                <a href="https://instagram.com/chaihaat_cafe" target="_blank" class="insta-link">@chaihaat_cafe &rarr;</a>
-            </div>
-
-            <!-- Dual Reel Showcase -->
-            <div class="reel-showcase">
-                <div class="reel-container">
-                    <iframe src="https://www.instagram.com/reel/DTUdamuCOdu/embed" allowtransparency="true"></iframe>
-                </div>
-                <div class="reel-container">
-                    <iframe src="https://www.instagram.com/reel/DRivaW7CNqU/embed" allowtransparency="true"></iframe>
-                </div>
-            </div>
         </section>
 
         <section id="menu" class="menu-section">
@@ -641,14 +678,15 @@
                 <!-- Bestseller (Spans 2 columns) -->
                 <div class="menu-item hero-item reveal-on-scroll">
                     <div class="badge-bestseller">Must Try</div>
-                    <img src="https://images.unsplash.com/photo-1625033405953-f20401c7d848?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1625033405953-f20401c7d848?q=80&w=687&auto=format&fit=crop" class="menu-item-img" alt="Special Kulhad Chai served in clay cup" loading="lazy">
                     <div class="item-details">
                         <span class="name">Special Kulhad Chai</span>
                         <span class="desc">Earthly flavor in clay cup</span>
                         <div class="item-footer">
                             <span class="price">₹15</span>
                             <div id="stepper-kuhlad" class="action-box">
-                                <button class="add-btn" onclick="updateItem('Special Kulhad Chai', 15, 1)">ADD</button>
+                                <!-- Fix 5.1: Use data attributes -->
+                                <button type="button" class="add-btn" data-name="Special Kulhad Chai" data-action="add">ADD</button>
                             </div>
                         </div>
                     </div>
@@ -656,14 +694,14 @@
                 
                 <!-- Item 2 -->
                 <div class="menu-item reveal-on-scroll">
-                    <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=300&q=80" class="menu-item-img" alt="Masala Chai" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1636920272028-c27f1ae474c3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFzYWxhJTIwY2hhaXxlbnwwfHwwfHx8MA%3D%3D" class="menu-item-img" alt="Masala Chai" loading="lazy">
                     <div class="item-details">
                         <span class="name">Masala Chai</span>
                         <span class="desc">Ginger & Cardamom blend</span>
                         <div class="item-footer">
                             <span class="price">₹10</span>
                             <div id="stepper-masala" class="action-box">
-                                <button class="add-btn" onclick="updateItem('Masala Chai', 10, 1)">ADD</button>
+                                <button type="button" class="add-btn" data-name="Masala Chai" data-action="add">ADD</button>
                             </div>
                         </div>
                     </div>
@@ -671,14 +709,14 @@
                 
                 <!-- Item 3 -->
                 <div class="menu-item reveal-on-scroll">
-                    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=300&h=300&fit=crop" class="menu-item-img" alt="Coffee" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=300&h=300&fit=crop" class="menu-item-img" alt="Hot Coffee" loading="lazy">
                     <div class="item-details">
                         <span class="name">Hot Coffee</span>
                         <span class="desc">Strong & Frothy</span>
                         <div class="item-footer">
                             <span class="price">₹20</span>
                             <div id="stepper-coffee" class="action-box">
-                                <button class="add-btn" onclick="updateItem('Hot Coffee', 20, 1)">ADD</button>
+                                <button type="button" class="add-btn" data-name="Hot Coffee" data-action="add">ADD</button>
                             </div>
                         </div>
                     </div>
@@ -691,14 +729,14 @@
 
                 <!-- Item 4 -->
                 <div class="menu-item reveal-on-scroll">
-                    <img src="https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=300&h=300&fit=crop" class="menu-item-img" alt="Maggie" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=300&h=300&fit=crop" class="menu-item-img" alt="Veg Maggie" loading="lazy">
                     <div class="item-details">
                         <span class="name">Veg Maggie</span>
                         <span class="desc">Spicy masala noodles</span>
                         <div class="item-footer">
                             <span class="price">₹40</span>
                             <div id="stepper-maggie" class="action-box">
-                                <button class="add-btn" onclick="updateItem('Veg Maggie', 40, 1)">ADD</button>
+                                <button type="button" class="add-btn" data-name="Veg Maggie" data-action="add">ADD</button>
                             </div>
                         </div>
                     </div>
@@ -706,14 +744,14 @@
                 
                 <!-- Item 5 -->
                 <div class="menu-item reveal-on-scroll">
-                    <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=300&h=300&fit=crop" class="menu-item-img" alt="Sandwich" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=300&h=300&fit=crop" class="menu-item-img" alt="Veg Sandwich" loading="lazy">
                     <div class="item-details">
                         <span class="name">Veg Sandwich</span>
                         <span class="desc">Grilled with cucumber & tomato</span>
                         <div class="item-footer">
                             <span class="price">₹50</span>
                             <div id="stepper-sandwich" class="action-box">
-                                <button class="add-btn" onclick="updateItem('Veg Sandwich', 50, 1)">ADD</button>
+                                <button type="button" class="add-btn" data-name="Veg Sandwich" data-action="add">ADD</button>
                             </div>
                         </div>
                     </div>
@@ -721,14 +759,14 @@
                 
                 <!-- Item 6 -->
                 <div class="menu-item reveal-on-scroll">
-                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&h=300&fit=crop" class="menu-item-img" alt="Burger" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&h=300&fit=crop" class="menu-item-img" alt="Cheese Burger" loading="lazy">
                     <div class="item-details">
                         <span class="name">Cheese Burger</span>
                         <span class="desc">Crispy patty with cheese slice</span>
                         <div class="item-footer">
                             <span class="price">₹70</span>
                             <div id="stepper-burger" class="action-box">
-                                <button class="add-btn" onclick="updateItem('Cheese Burger', 70, 1)">ADD</button>
+                                <button type="button" class="add-btn" data-name="Cheese Burger" data-action="add">ADD</button>
                             </div>
                         </div>
                     </div>
@@ -736,19 +774,38 @@
                 
                 <!-- Item 7 -->
                 <div class="menu-item reveal-on-scroll">
-                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&h=300&fit=crop" class="menu-item-img" alt="Pizza" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&h=300&fit=crop" class="menu-item-img" alt="Farmhouse Pizza" loading="lazy">
                     <div class="item-details">
                         <span class="name">Farmhouse Pizza</span>
                         <span class="desc">Loaded with fresh veggies</span>
                         <div class="item-footer">
                             <span class="price">₹120</span>
                             <div id="stepper-pizza" class="action-box">
-                                <button class="add-btn" onclick="updateItem('Farmhouse Pizza', 120, 1)">ADD</button>
+                                <button type="button" class="add-btn" data-name="Farmhouse Pizza" data-action="add">ADD</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- INSTAGRAM FEED SECTION -->
+        <section class="insta-section reveal-on-scroll">
+            <div class="insta-header">
+                <h2 class="insta-title">Daily Vibes</h2>
+                <a href="https://instagram.com/chaihaat_cafe" target="_blank" class="insta-link">@chaihaat_cafe &rarr;</a>
+            </div>
+
+            <!-- Dual Reel Showcase -->
+            <div class="reel-showcase">
+                <div class="reel-container">
+                    <!-- Fix 4.1: Lazy Load iframes -->
+                    <iframe src="https://www.instagram.com/reel/DTUdamuCOdu/embed" loading="lazy" allowtransparency="true"></iframe>
+                </div>
+                <div class="reel-container">
+                    <iframe src="https://www.instagram.com/reel/DRivaW7CNqU/embed" loading="lazy" allowtransparency="true"></iframe>
+                </div>
             </div>
         </section>
 
@@ -780,14 +837,16 @@
                     scrolling="no" 
                     marginheight="0" 
                     marginwidth="0" 
+                    loading="lazy"
                     src="https://maps.google.com/maps?q=24.279624,80.765374&t=&z=15&ie=UTF8&iwloc=&output=embed"
                     title="Chai Haat Location"
                     style="filter: grayscale(0.2) contrast(1.1);">
                 </iframe>
             </div>
 
+            <!-- Fix 3.3: Accessible map pin -->
             <a href="https://www.google.com/maps/search/?api=1&query=24.279624,80.765374" target="_blank" class="btn">
-                📍 Open in Google Maps
+                <span aria-hidden="true">📍</span> Open in Google Maps
             </a>
         </section>
 
@@ -795,7 +854,7 @@
 
     <footer>
         <p>Maihar, Madhya Pradesh</p>
-        <p style="margin-top: 8px; opacity: 0.7;">Freshly Brewed & Served with Love</p>
+        <p style="margin-top: 8px; opacity: 0.7;">Built on good chai</p>
 
         <div class="social-links">
             <a href="https://instagram.com/chaihaat" target="_blank" class="social-icon" aria-label="Instagram">
@@ -824,11 +883,12 @@
     </div>
 
     <!-- CART MODAL (Hidden by default) -->
-    <div id="cart-modal" class="cart-modal" onclick="closeCartOnOutside(event)">
+    <!-- Fix 2.1: Safer click-outside detection (handled in JS) -->
+    <div id="cart-modal" class="cart-modal">
         <div class="cart-content">
             <div class="cart-header">
                 <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--text-primary);">Your Order</h3>
-                <button onclick="toggleCart()" style="font-size: 2rem; line-height: 1; color: var(--text-secondary); background:none; padding: 10px;">&times;</button>
+                <button type="button" onclick="toggleCart()" style="font-size: 2rem; line-height: 1; color: var(--text-secondary); background:none; padding: 10px;">&times;</button>
             </div>
             
             <div id="cart-items-container" class="cart-items">
@@ -841,7 +901,7 @@
                     <span id="cart-final-total">₹0</span>
                 </div>
                 
-                <button class="checkout-btn" onclick="checkoutWhatsApp()">
+                <button type="button" class="checkout-btn" onclick="checkoutWhatsApp()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                     Place Order via WhatsApp
                 </button>
@@ -850,8 +910,31 @@
     </div>
 
     <script>
-        let cart = [];
+        // Fix 1.3: Single Source of Truth
+        const MENU = {
+            'Special Kulhad Chai': 15,
+            'Masala Chai': 10,
+            'Hot Coffee': 20,
+            'Veg Maggie': 40,
+            'Veg Sandwich': 50,
+            'Cheese Burger': 70,
+            'Farmhouse Pizza': 120
+        };
+
+        // Fix 5.2: Cart object maps Name -> Quantity
+        let cart = {}; 
         const PHONE_NUMBER = "919144475551";
+
+        // Map Item names to unique IDs for DOM manipulation
+        const itemMap = {
+            'Special Kulhad Chai': 'stepper-kuhlad',
+            'Masala Chai': 'stepper-masala',
+            'Hot Coffee': 'stepper-coffee',
+            'Veg Maggie': 'stepper-maggie',
+            'Veg Sandwich': 'stepper-sandwich',
+            'Cheese Burger': 'stepper-burger',
+            'Farmhouse Pizza': 'stepper-pizza'
+        };
 
         // Initialize Theme Logic
         function toggleTheme() {
@@ -875,24 +958,29 @@
             }
         }
 
-        // Check LocalStorage on load
-        (function() {
-            const saved = localStorage.getItem('theme');
-            if (saved === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            }
-        })();
+        // Fix 5.1: Global Event Listener (Event Delegation)
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
 
-        // Map Item names to unique IDs for DOM manipulation
-        const itemMap = {
-            'Special Kulhad Chai': 'stepper-kuhlad',
-            'Masala Chai': 'stepper-masala',
-            'Hot Coffee': 'stepper-coffee',
-            'Veg Maggie': 'stepper-maggie',
-            'Veg Sandwich': 'stepper-sandwich',
-            'Cheese Burger': 'stepper-burger',
-            'Farmhouse Pizza': 'stepper-pizza'
-        };
+            const name = btn.dataset.name;
+            const action = btn.dataset.action;
+
+            if (name && action) {
+                if (action === 'add' || action === 'increase') {
+                    updateItem(name, 1);
+                } else if (action === 'decrease') {
+                    updateItem(name, -1);
+                }
+            }
+        });
+
+        // Fix 2.1: Safer Click Outside Logic
+        document.getElementById('cart-modal').addEventListener('click', (e) => {
+            if (!e.target.closest('.cart-content')) {
+                toggleCart();
+            }
+        });
 
         function scrollToCategory(id) {
             const el = document.getElementById(id);
@@ -911,22 +999,19 @@
         }
 
         // --- CORE CART FUNCTION ---
-        function updateItem(name, price, change) {
-            let item = cart.find(i => i.name === name);
+        function updateItem(name, change) {
+            // Price lookup from constant
+            const price = MENU[name];
             
-            if (!item) {
-                if (change > 0) {
-                    cart.push({ name, price, qty: 1 });
-                }
-            } else {
-                item.qty += change;
-                if (item.qty <= 0) {
-                    cart = cart.filter(i => i.name !== name);
-                }
+            if (!cart[name]) cart[name] = 0;
+            cart[name] += change;
+
+            if (cart[name] <= 0) {
+                delete cart[name];
             }
             
             updateCartUI(); 
-            updateMenuUI(); 
+            updateMenuUI(name); 
             
             // Trigger Shake Animation
             const floatBtn = document.getElementById('cart-float');
@@ -935,32 +1020,24 @@
             floatBtn.classList.add('shake');
         }
 
-        function updateMenuUI() {
-            for (const [name, domId] of Object.entries(itemMap)) {
-                const container = document.getElementById(domId);
-                const item = cart.find(i => i.name === name);
-                
-                if (item) {
-                    container.innerHTML = `
-                        <div class="stepper">
-                            <button class="stepper-btn" onclick="updateItem('${name}', ${item.price}, -1)">−</button>
-                            <div class="stepper-val">${item.qty}</div>
-                            <button class="stepper-btn" onclick="updateItem('${name}', ${item.price}, 1)">+</button>
-                        </div>
-                    `;
-                } else {
-                    let price = 0;
-                    // Helper to get price (in a real app, this would be cleaner)
-                    if(name.includes('Kulhad')) price = 15;
-                    else if(name.includes('Masala')) price = 10;
-                    else if(name.includes('Coffee')) price = 20;
-                    else if(name.includes('Maggie')) price = 40;
-                    else if(name.includes('Sandwich')) price = 50;
-                    else if(name.includes('Burger')) price = 70;
-                    else if(name.includes('Pizza')) price = 120;
-
-                    container.innerHTML = `<button class="add-btn" onclick="updateItem('${name}', ${price}, 1)">ADD</button>`;
-                }
+        function updateMenuUI(name) {
+            // Only update specific item if passed, else all (unlikely needed)
+            if (!name || !itemMap[name]) return;
+            
+            const domId = itemMap[name];
+            const container = document.getElementById(domId);
+            const qty = cart[name] || 0;
+            
+            if (qty > 0) {
+                container.innerHTML = `
+                    <div class="stepper">
+                        <button type="button" class="stepper-btn" data-name="${name}" data-action="decrease">−</button>
+                        <div class="stepper-val">${qty}</div>
+                        <button type="button" class="stepper-btn" data-name="${name}" data-action="increase">+</button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `<button type="button" class="add-btn" data-name="${name}" data-action="add">ADD</button>`;
             }
         }
 
@@ -971,10 +1048,16 @@
             const itemsContainer = document.getElementById('cart-items-container');
             const finalTotalEl = document.getElementById('cart-final-total');
 
-            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            let total = 0;
+            let count = 0;
+
+            // Calculate totals using MENU object prices
+            for (const [name, qty] of Object.entries(cart)) {
+                total += MENU[name] * qty;
+                count += qty;
+            }
             
-            if (cart.length > 0) {
+            if (count > 0) {
                 floatBtn.classList.add('visible');
                 totalBadge.innerText = "₹" + total;
                 countTxt.innerText = count + (count === 1 ? " ITEM" : " ITEMS");
@@ -982,7 +1065,7 @@
                 floatBtn.classList.remove('visible');
             }
 
-            if (cart.length === 0) {
+            if (count === 0) {
                 itemsContainer.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 60px 0;"><p>Your cart is empty.</p><small>Add some yummy food!</small></div>';
                 finalTotalEl.innerText = "₹0";
                 if(document.getElementById('cart-modal').style.display === "flex") toggleCart();
@@ -990,26 +1073,27 @@
             }
 
             let html = '';
-            cart.forEach((item) => {
+            for (const [name, qty] of Object.entries(cart)) {
+                const price = MENU[name];
                 html += `
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid var(--border-soft); padding-bottom:16px;">
                         <div>
-                            <div style="font-weight:700; color:var(--text-primary); font-size:1.05rem;">${item.name}</div>
-                            <div style="font-size:0.9rem; color:var(--text-secondary);">₹${item.price} each</div>
+                            <div style="font-weight:700; color:var(--text-primary); font-size:1.05rem;">${name}</div>
+                            <div style="font-size:0.9rem; color:var(--text-secondary);">₹${price} each</div>
                         </div>
                         <div style="display:flex; align-items:center; gap:12px;">
                             <div class="stepper" style="height:32px;">
-                                <button class="stepper-btn" onclick="updateItem('${item.name}', ${item.price}, -1)">−</button>
-                                <div class="stepper-val">${item.qty}</div>
-                                <button class="stepper-btn" onclick="updateItem('${item.name}', ${item.price}, 1)">+</button>
+                                <button type="button" class="stepper-btn" data-name="${name}" data-action="decrease">−</button>
+                                <div class="stepper-val">${qty}</div>
+                                <button type="button" class="stepper-btn" data-name="${name}" data-action="increase">+</button>
                             </div>
                             <div style="font-weight:700; min-width:50px; text-align:right; font-size:1.1rem; color:var(--text-primary);">
-                                ₹${item.price * item.qty} 
+                                ₹${price * qty} 
                             </div>
                         </div>
                     </div>
                 `;
-            });
+            }
             itemsContainer.innerHTML = html;
             finalTotalEl.innerText = "₹" + total;
         }
@@ -1017,32 +1101,31 @@
         function toggleCart() {
             const modal = document.getElementById('cart-modal');
             const floatBtn = document.getElementById('cart-float');
+            const hasItems = Object.keys(cart).length > 0;
             
             if (modal.style.display === "flex") {
                 modal.style.display = "none";
-                if(cart.length > 0) floatBtn.style.display = "flex"; 
+                // Only show float button if cart has items
+                if(hasItems) floatBtn.classList.add('visible');
             } else {
-                if(cart.length === 0) return;
+                if(!hasItems) return;
                 modal.style.display = "flex";
-                floatBtn.style.display = "none";
-            }
-        }
-
-        function closeCartOnOutside(event) {
-            if (event.target.id === 'cart-modal') {
-                toggleCart();
+                // Hide float button when modal is open to prevent overlay issues
+                floatBtn.classList.remove('visible');
             }
         }
 
         function checkoutWhatsApp() {
-            if (cart.length === 0) return;
+            const items = Object.entries(cart);
+            if (items.length === 0) return;
 
             let message = "Hello Chai Haat Cafe, I would like to place an order:%0A%0A";
             let total = 0;
 
-            cart.forEach(item => {
-                message += `▪ ${item.name} x ${item.qty} (₹${item.price * item.qty})%0A`;
-                total += item.price * item.qty;
+            items.forEach(([name, qty]) => {
+                const price = MENU[name];
+                message += `▪ ${name} x ${qty} (₹${price * qty})%0A`;
+                total += price * qty;
             });
 
             message += `%0A*Total Bill: ₹${total}*`;
@@ -1053,6 +1136,7 @@
         // Ensure icon state is correct on load
         window.addEventListener('DOMContentLoaded', () => {
             const saved = localStorage.getItem('theme');
+            // Ensure icon matches the attribute set in the HEAD script
             updateThemeIcon(saved === 'dark' ? 'dark' : 'light');
             
             // Intersection Observer for Scroll Animations
@@ -1067,18 +1151,28 @@
             document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
         });
 
-        // Scroll Spy for Pills
+        // Fix 2.3: Throttled Scroll Spy
+        let ticking = false;
         window.addEventListener('scroll', () => {
-            const hotSips = document.getElementById('hot-sips');
-            const savory = document.getElementById('savory-bites');
-            const scrollPos = window.scrollY + 180; 
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const hotSips = document.getElementById('hot-sips');
+                    const savory = document.getElementById('savory-bites');
+                    const scrollPos = window.scrollY + 180; 
 
-            if (scrollPos >= savory.offsetTop) {
-                document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll('.nav-pill')[1].classList.add('active');
-            } else if (scrollPos >= hotSips.offsetTop) {
-                document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll('.nav-pill')[0].classList.add('active');
+                    if (savory && hotSips) { // Check existence
+                        const btns = document.querySelectorAll('.nav-pill');
+                        if (scrollPos >= savory.offsetTop) {
+                            btns.forEach(btn => btn.classList.remove('active'));
+                            if(btns[1]) btns[1].classList.add('active');
+                        } else if (scrollPos >= hotSips.offsetTop) {
+                            btns.forEach(btn => btn.classList.remove('active'));
+                            if(btns[0]) btns[0].classList.add('active');
+                        }
+                    }
+                    ticking = false;
+                });
+                ticking = true;
             }
         });
     </script>
